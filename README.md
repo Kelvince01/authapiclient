@@ -1,7 +1,6 @@
 # authapiclient
 An Angular Client to consume the Auth Api api
 
-<<<<<<< HEAD
 # authapiclient
 An Angular Client to consume the Auth Api api
 =======
