@@ -5,49 +5,39 @@ import { first } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertService } from 'src/app/services/alert.service';
 
-
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  selector: 'app-forgot-password',
+  templateUrl: './forgot-password.component.html',
+  styleUrls: ['./forgot-password.component.css']
 })
-export class SignupComponent implements OnInit {
-  registerForm: FormGroup;
+export class ForgotPasswordComponent implements OnInit {
+  passResetForm: FormGroup;
   loading = false;
   submitted = false;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
-    private authService: AuthService, private alertService: AlertService) {
-      // redirect to home if already logged in
-      if (this.authService.currentUserValue) {
-        this.router.navigate(['/']);
-    }
-     }
+    private authService: AuthService, private alertService: AlertService) { }
 
   ngOnInit(): void {
-    this.registerForm = this.formBuilder.group({
+    this.passResetForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      password2: ['', [Validators.required, Validators.minLength(6)]]
   });
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.registerForm.controls; }
+  get f() { return this.passResetForm.controls; }
 
   onSubmit() {
       this.submitted = true;
 
       // stop here if form is invalid
-      if (this.registerForm.invalid) {
+      if (this.passResetForm.invalid) {
           return;
       }
 
       this.loading = true;
-      this.authService.register(this.registerForm.value)
-          .pipe(first())
+      this.authService.forgot_password(this.passResetForm.value)
           .subscribe(
               data => {
                   this.alertService.success('Registration successful', true);
@@ -57,8 +47,6 @@ export class SignupComponent implements OnInit {
                   this.alertService.error(error);
                   this.loading = false;
               });
-
-              location.reload();
   }
 
 }
